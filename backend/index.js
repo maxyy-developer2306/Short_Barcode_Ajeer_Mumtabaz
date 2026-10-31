@@ -17,8 +17,16 @@ app.use(cors({
   credentials: true
 }));
 
-// Database Connection
-connectDB();
+// Database Middleware for Serverless
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database Connection Middleware Error:', error);
+    res.status(500).json({ message: 'Database connection failed', error: error.message });
+  }
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -38,7 +46,6 @@ app.get('/', (req, res) => {
   res.send('API is running successfully...');
 });
 
-// Local development ke liye listen karein, Vercel ke liye app export hoga
 const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
