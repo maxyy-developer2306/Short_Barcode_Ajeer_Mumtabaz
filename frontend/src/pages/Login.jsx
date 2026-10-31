@@ -10,13 +10,15 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
     try {
       const { data } = await API.post('/auth/login', { username, password });
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data));
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      console.error('Login Error:', err);
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
@@ -24,7 +26,7 @@ export default function Login() {
     <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
       <form onSubmit={handleLogin} className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-indigo-400">Admin Login</h2>
-        {error && <div className="bg-red-500 text-white p-2 mb-4 rounded text-sm">{error}</div>}
+        {error && <div className="bg-red-500 text-white p-2 mb-4 rounded text-sm text-center">{error}</div>}
         <div className="mb-4">
           <label className="block mb-2 text-sm">Username</label>
           <input 
