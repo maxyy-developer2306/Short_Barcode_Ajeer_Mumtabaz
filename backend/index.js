@@ -27,6 +27,28 @@ app.get('/', (req, res) => {
   res.send('API is running successfully...');
 });
 
+// Database Status Check API
+app.get('/api/health', (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  // mongoose.connection.readyState values: 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+  
+  if (dbState === 1) {
+    res.status(200).json({ 
+      status: 'success', 
+      message: 'Database is connected successfully! ✅',
+      dbState: dbState 
+    });
+  } else {
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Database is NOT connected! ❌', 
+      dbState: dbState 
+    });
+  }
+});
+
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
