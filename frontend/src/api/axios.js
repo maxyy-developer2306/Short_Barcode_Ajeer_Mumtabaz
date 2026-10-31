@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://short-qr-code-ajeer.vercel.app/api',
+  // baseURL ke aakhir me /api lazmi hona chahiye
+  baseURL: 'https://short-qr-code-ajeer.vercel.app/api',
   withCredentials: true,
 });
 
