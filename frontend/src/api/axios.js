@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({
   // baseURL ke aakhir me /api lazmi hona chahiye
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://short-barcode-ajeer-mumtabaz.vercel.app/api',
   withCredentials: true,
 });
 
