@@ -1,3 +1,4 @@
+import dns from 'dns';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -7,6 +8,13 @@ import authRoutes from './routes/authRoutes.js';
 import workerRoutes from './routes/workerRoutes.js';
 
 dotenv.config();
+
+// Local fix: force Google and Cloudflare DNS so the MongoDB Atlas SRV lookup works.
+// Not needed on Vercel, so it only runs outside production.
+// connectDB() runs per request (after this line), so the DNS servers are set in time.
+if (process.env.NODE_ENV !== 'production') {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+}
 
 const app = express();
 
